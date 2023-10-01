@@ -86,39 +86,39 @@ function displayCards(data) {
         description.textContent = item.description;
 
 
-        const image = document.createElement("img");
-        image.src = item.imageUrl;
+        //         const image = document.createElement("img");
+        //         image.src = item.imageUrl;
 
 
-        // Step 3: Create accordion container
-        const accordion = document.createElement("div");
-        accordion.classList.add("accordion");
+        //         // Step 3: Create accordion container
+        //         const accordion = document.createElement("div");
+        //         accordion.classList.add("accordion");
 
 
-        // Step 4: Create accordion button
-        const accordionButton = document.createElement("button");
-        accordionButton.textContent = "Toggle Accordion";
-        accordionButton.classList.add("accordion-button");
+        //         // Step 4: Create accordion button
+        //         const accordionButton = document.createElement("button");
+        //         accordionButton.textContent = "Toggle Accordion";
+        //         accordionButton.classList.add("accordion-button");
 
 
-        // Step 5: Create accordion content
-        const accordionContent = document.createElement("div");
-        accordionContent.classList.add("accordion-content");
-        accordionContent.textContent = "Accordion content goes here.";
+        //         // Step 5: Create accordion content
+        //         const accordionContent = document.createElement("div");
+        //         accordionContent.classList.add("accordion-content");
+        //         accordionContent.textContent = "Accordion content goes here.";
 
 
-        // Step 6: Append elements to their respective parents
-        accordion.appendChild(accordionButton);
-        accordion.appendChild(accordionContent);
+        //         // Step 6: Append elements to their respective parents
+        //         accordion.appendChild(accordionButton);
+        //         accordion.appendChild(accordionContent);
 
 
         card.appendChild(title);
         card.appendChild(description);
-        card.appendChild(image);
-        card.appendChild(accordion);
+        // card.appendChild(image);
+        // card.appendChild(accordion);
 
 
-        // Step 7: Append the card to the display div
+        //         // Step 7: Append the card to the display div
         display.appendChild(card);
     });
 }
