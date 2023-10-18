@@ -1,10 +1,3 @@
-// // Create a button for the added item
-
-
-// addToCartButton.classList.add('btn', 'btn-primary');
-// addToCartButton.textContent = 'Add to Cart';
-// console.log(addToCartButton);
-
 
 const cardContainer = document.getElementById("cardContainer");
 // const cartModal = document.getElementById("cartModal");
@@ -105,7 +98,7 @@ function displayCards(data) {
 
 
         const addToCartBtn = document.createElement('a');
-        addToCartBtn.href = '#'; // Set the actual link here if needed
+        addToCartBtn.href = '#';
         addToCartBtn.classList.add('btn', 'btn-primary');
         addToCartBtn.textContent = 'Add to Cart';
 
@@ -125,79 +118,68 @@ function displayCards(data) {
         // Append the card to the card container
         cardContainer.appendChild(cardTemplate);
 
+        addToCartBtn.addEventListener('click', () => {
 
+            submitToCart(item);
+
+            // console.log(item);
+        })
 
 
     });
 }
 function submitToCart(item) {
+
+
+    cart.push(item);
+    console.log('cart', cart);
     // Use the parameter to add to the cart array
-    const existingItem = cart.find(function (element) {
-        return element.id === item.id;
-    });
-    if (existingItem) {
-        existingItem.quantity++;
-    } else {
-        cart.push(item);
-        updateCartModal();
-    }
+    // const existingItem = cart.find(function (element) {
+    //     return element.id === item.id;
+    // });
+    // if (existingItem) {
+    //     existingItem.quantity++;
+    // } else {
+    //     cart.push(item);
+    //     updateCartModal();
+    // }
 
 
-    // Create a button for the added item
 
-
-    addToCartButton.classList.add('btn', 'btn-primary');
-    addToCartButton.textContent = 'Add to Cart';
-    console.log(addToCartButton);
-
-
-    // Append the button to the cart modal body
-    // const cartModalBody = document.getElementById('modal-body');
-    // cartModalBody.appendChild(addToCartButton);
 }
 
 
 
 
-function updateCartModal() {
-    // cartModalBody.innerHTML = '';
+// function updateCartModal() {
+//     cartModalBody.innerHTML = '';
 
 
-    cart.forEach((item) => {
-        const cartItemDiv = document.createElement("div");
-        cartItemDiv.classList.add("mb-2");
+//     cart.forEach((item) => {
+//         const cartItemDiv = document.createElement("div");
+//         cartItemDiv.classList.add("mb-2");
 
 
-        const cartItemTitle = document.createElement("h6");
-        cartItemTitle.textContent = item.title;
+//         const cartItemTitle = document.createElement("h6");
+//         cartItemTitle.textContent = item.title;
 
 
-        const cartItemQuantity = document.createElement("span");
-        cartItemQuantity.textContent = `Quantity: ${item.quantity}`;
+//         const cartItemQuantity = document.createElement("span");
+//         cartItemQuantity.textContent = `Quantity: ${item.quantity}`;
 
 
-        const cartItemCost = document.createElement("span");
-        cartItemCost.textContent = `Price: $${(item.cost * item.quantity).toFixed(2)}`;
+//         const cartItemCost = document.createElement("span");
+//         cartItemCost.textContent = `Price: $${(item.cost * item.quantity).toFixed(2)}`;
 
 
-        cartItemDiv.appendChild(cartItemTitle);
-        cartItemDiv.appendChild(cartItemQuantity);
-        cartItemDiv.appendChild(cartItemCost);
+//         cartItemDiv.appendChild(cartItemTitle);
+//         cartItemDiv.appendChild(cartItemQuantity);
+//         cartItemDiv.appendChild(cartItemCost);
 
 
-        // cartModalBody.appendChild(cartItemDiv);
-    });
-}
-
-
-
-
-
-
-
-
-
-
+//         cartModalBody.appendChild(cartItemDiv);
+//     });
+// }
 
 
 // Event listeners for category buttons (electronics, jewelery, etc.)
@@ -220,9 +202,9 @@ document.getElementById("womensClothing").addEventListener("click", () => {
     fakeStore("women's clothing");
 });
 // Add a click event listener to the button
-addToCartButton.addEventListener('click', () => {
-    submitToCart(item); // Pass the 'item' parameter
-});
+// addToCartButton.addEventListener('click', () => {
+//     submitToCart(item); // Pass the 'item' parameter
+// });
 
 
 
