@@ -1,13 +1,13 @@
 
 const cardContainer = document.getElementById("cardContainer");
-// const cartModal = document.getElementById("cartModal");
+const cartModal = document.getElementById("cartModal")
 const electronics = document.getElementById("electronics");
 const jewelery = document.getElementById("jewelery");
 const mensClothing = document.getElementById("mensClothing");
 const womensClothing = document.getElementById("womensClothing");
-const display = document.getElementById("display");
-// const cartModalBody = document.getElementById("cartModalBody");
-const addToCartButton = document.createElement('button');
+const displayCartButton = document.getElementById("displayCartButton")
+const cartTotalsTable = document.getElementById('cartTotals');
+
 let data = [];
 let cart = [];
 
@@ -119,10 +119,15 @@ function displayCards(data) {
         cardContainer.appendChild(cardTemplate);
 
         addToCartBtn.addEventListener('click', () => {
-
-            submitToCart(item);
+            const product = {
+                id: item.id,
+                title: item.title,
+                price: item.price,
+                quantity: 1
+            }
 
             // console.log(item);
+            submitToCart(product);
         })
 
 
@@ -133,54 +138,132 @@ function submitToCart(item) {
 
     cart.push(item);
     console.log('cart', cart);
-    // Use the parameter to add to the cart array
-    // const existingItem = cart.find(function (element) {
-    //     return element.id === item.id;
-    // });
-    // if (existingItem) {
-    //     existingItem.quantity++;
-    // } else {
-    //     cart.push(item);
-    //     updateCartModal();
-    // }
+    updateCartTable();
+}
 
+function updateCartTable() {
+    const cartTableBody = document.getElementById('cartTableBody');
+    cartTableBody.innerHTML = '';      // Clear the existing content
+
+    cart.forEach(item => {
+        const row = cartTableBody.insertRow();
+
+        // Create cells for each item's information
+        const productCell = row.insertCell(0);
+        productCell.textContent = item.title;
+
+        const priceCell = row.insertCell(1);
+        priceCell.textContent = `$${item.price.toFixed(2)}`;
+
+        const quantityCell = row.insertCell(2);
+        quantityCell.textContent = item.quantity;
+
+        const subtotalCell = row.insertCell(3);
+        subtotalCell.textContent = `$${(item.price * item.quantity).toFixed(2)}`;
+    });
+}
+// The User can clear the cart by clicking the "Clear Cart" button and still add items later
+function clearCart() {
+    cart = [];
+
+    const cartTableBody = document.getElementById("cartTableBody")
+    if (cartTableBody) {
+        cartTableBody.innerHTML = '';
+    }
+    updateCartTotals();
 
 
 }
 
+function displayCart() {
+    // Clear the existing cart modal
+    cartModal.innerHTML = '';
 
+    // Create a table to display the cart items
+    const table = document.createElement('table');
+    table.classList.add('table');
 
+    // Create the table header
+    const theader = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    const headerTitle = document.createElement('th');
+    headerTitle.textContent = 'Product';
+    const headerPrice = document.createElement('th');
+    headerPrice.textContent = 'Price';
+    const headerQuantity = document.createElement('th');
+    headerQuantity.textContent = 'Quantity';
+    headerRow.appendChild(headerTitle);
+    headerRow.appendChild(headerPrice);
+    headerRow.appendChild(headerQuantity);
+    theader.appendChild(headerRow);
 
-// function updateCartModal() {
-//     cartModalBody.innerHTML = '';
+    // Create the table body
+    const tbody = document.createElement('tbody');
 
+    // Iterate through the cart and create rows for each item
+    cart.forEach((item) => {
+        const tr = document.createElement('tr');
+        const productName = document.createElement('td');
+        productName.textContent = item.title;
+        const productPrice = document.createElement('td');
+        productPrice.textContent = `$${item.price}`;
+        const productQuantity = document.createElement('td');
+        productQuantity.textContent = item.quantity;
 
-//     cart.forEach((item) => {
-//         const cartItemDiv = document.createElement("div");
-//         cartItemDiv.classList.add("mb-2");
+        // Append the cells to the row
+        tr.appendChild(productName);
+        tr.appendChild(productPrice);
+        tr.appendChild(productQuantity);
 
+        // Append the row to the table body
+        tbody.appendChild(tr);
+    });
 
-//         const cartItemTitle = document.createElement("h6");
-//         cartItemTitle.textContent = item.title;
+    // Append the header and body to the table
+    table.appendChild(theader);
+    table.appendChild(tbody);
 
+    // Append the table to the cart modal
+    cartModal.appendChild(table);
 
-//         const cartItemQuantity = document.createElement("span");
-//         cartItemQuantity.textContent = `Quantity: ${item.quantity}`;
+}
+updateCartTotals();
 
+// Function to update cart totals
+function updateCartTotals() {
+    // Initialize variables for totals
+    let subtotal = 0;
+    let tax = 0;
+    let shipping = 5; // Example: Fixed shipping cost
+    let total = 0;
 
-//         const cartItemCost = document.createElement("span");
-//         cartItemCost.textContent = `Price: $${(item.cost * item.quantity).toFixed(2)}`;
+    // Loop through the items in the cart
+    cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+    });
 
+    // Calculate tax (10% of subtotal)
+    tax = 0.1 * subtotal;
 
-//         cartItemDiv.appendChild(cartItemTitle);
-//         cartItemDiv.appendChild(cartItemQuantity);
-//         cartItemDiv.appendChild(cartItemCost);
+    // Calculate total
+    total = subtotal + tax + shipping;
 
+    // Update the HTML elements
+    document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+    document.getElementById('shipping').textContent = `$${shipping.toFixed(2)}`;
+    document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+}
+function purchase() {
 
-//         cartModalBody.appendChild(cartItemDiv);
-//     });
-// }
+    alert("Thank you for your Purchase!");
 
+    cart = [];
+
+    displayCart();
+    updateCartTotals()
+
+}
 
 // Event listeners for category buttons (electronics, jewelery, etc.)
 document.getElementById("electronics").addEventListener("click", () => {
@@ -201,10 +284,12 @@ document.getElementById("mensClothing").addEventListener("click", () => {
 document.getElementById("womensClothing").addEventListener("click", () => {
     fakeStore("women's clothing");
 });
-// Add a click event listener to the button
-// addToCartButton.addEventListener('click', () => {
-//     submitToCart(item); // Pass the 'item' parameter
-// });
+document.getElementById('displayCartButton').addEventListener('click', () => {
+    // displayCart();
+    updateCartTotals();
+    // console.log('displayCart',displayCart);
+})
 
-
-
+window.onload = () => {
+    fakeStore("electronics");
+}
